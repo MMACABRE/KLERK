@@ -1,0 +1,40 @@
+{% extends "print/base.html" %}
+{% block content %}
+    <h2>مشخصات</h2>
+    <div class="doc-kv">{% for k, v, mono in kv %}<div><b>{{ k }}:</b> <span class="{% if mono %}mono{% endif %}">{{ v }}</span></div>{% endfor %}</div>
+    {% if p.address %}<p><b class="muted">نشانی:</b> {{ p.address }}</p>{% endif %}
+    {% if p.allergies or p.conditions %}<p><b class="muted">حساسیت‌ها:</b> {{ p.allergies|default:"—" }} · <b class="muted">بیماری‌ها:</b> {{ p.conditions|default:"—" }}</p>{% endif %}
+    {% if p.medical_notes %}<h2>یادداشت‌های بالینی</h2><p class="doc-pre">{{ p.medical_notes }}</p>{% endif %}
+
+    {% if medications %}
+    <h2>داروهای مصرفی</h2>
+    <table class="doc-table"><thead><tr><th>دارو</th><th>دوز</th><th>تواتر</th></tr></thead>
+      <tbody>{% for md in medications %}<tr><td>{{ md.name }}</td><td>{{ md.dosage|default:"—" }}</td><td>{{ md.frequency|default:"—" }}</td></tr>{% endfor %}</tbody></table>
+    {% endif %}
+
+    {% if visits is not None %}
+    <h2>ویزیت‌ها ({{ visit_count }})</h2>
+    {% if not visits %}<div class="doc-empty">ویزیتی ثبت نشده است.</div>{% endif %}
+    {% for v in visits %}
+    <div class="doc-visit">
+      <p><b>{{ v.label }}</b> · {{ v.date }} · <span class="mono">{{ v.time }}</span>{% if v.reason %} · {{ v.reason }}{% endif %}</p>
+      {% if v.note %}<p class="doc-pre"><span class="muted">شرح پزشک:</span> {{ v.note }}</p>{% endif %}
+      {% if v.has_bill %}
+      <table class="doc-table"><tbody>
+        {% for l in v.lines %}<tr><td>{{ l.name }}</td><td class="num">{{ l.qty }}</td><td class="num"><span class="money">{{ l.net }}</span></td></tr>{% endfor %}
+        <tr><td class="muted">قابل پرداخت / پرداخت‌شده</td><td></td><td class="num"><span class="money">{{ v.owed }}</span> / <span class="money">{{ v.paid }}</span></td></tr>
+      </tbody></table>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if files is not None %}
+    <h2>مدارک بارگذاری‌شده ({{ file_count }})</h2>
+    {% if not files %}<div class="doc-empty">مدرکی بارگذاری نشده است.</div>{% else %}
+    <table class="doc-table"><thead><tr><th>عنوان یا نام فایل</th><th>طبقه‌بندی</th><th>تاریخ</th></tr></thead>
+      <tbody>{% for f in files %}<tr><td>{{ f.title }}{% if f.filename %}<span class="sub mono">{{ f.filename }}</span>{% endif %}</td><td>{{ f.category }}</td><td>{{ f.date }}</td></tr>{% endfor %}</tbody></table>
+    {% endif %}
+    <p class="doc-note">فایل‌ها در این فرم فقط فهرست شده‌اند؛ خود فایل‌ها در پرونده‌ی بیمار در سامانه هستند.</p>
+    {% endif %}
+{% endblock %}
