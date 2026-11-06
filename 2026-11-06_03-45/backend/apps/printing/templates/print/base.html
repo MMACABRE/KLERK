@@ -1,0 +1,46 @@
+{# Shared frame of every printable document (legacy views/print/top.ejs + bottom.ejs). #}<!doctype html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="darkreader-lock">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>{{ title }} · {{ clinic.clinic_name }}</title>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/print.css">
+<script type="module" src="/js/print.js"></script>
+</head>
+<body class="print-page print-{{ size|default:'a4' }}{% if body_class %} {{ body_class }}{% endif %}">
+  <div class="print-bar">
+    <a class="btn btn-sm btn-ghost" href="{{ back|default:'/print' }}">بازگشت</a>
+    <button class="btn btn-sm btn-primary" type="button" data-print hidden><svg class="icon"><use href="#i-print"/></svg>چاپ یا ذخیره به PDF</button>
+    <span class="print-hint">برای ذخیره‌ی PDF، از چاپ مرورگر (Ctrl+P) گزینه‌ی «Save as PDF» را انتخاب کنید.</span>
+  </div>
+  {% include "print/_sprite.html" %}
+  <article class="doc">
+    <span class="doc-corner doc-corner-1" aria-hidden="true"></span><span class="doc-corner doc-corner-2" aria-hidden="true"></span>
+    <span class="doc-corner doc-corner-3" aria-hidden="true"></span><span class="doc-corner doc-corner-4" aria-hidden="true"></span>
+    <div class="doc-watermark" aria-hidden="true">{{ clinic.clinic_name }}</div>
+    <header class="doc-letterhead">
+      <div class="doc-mark" aria-hidden="true"><svg class="icon"><use href="#i-cross"/></svg></div>
+      <div>
+        <div class="doc-clinic">{{ clinic.clinic_name }}</div>
+        <div class="doc-contact">{{ clinic.clinic_address }}{% if clinic.clinic_address and clinic.clinic_phone %} · {% endif %}{% if clinic.clinic_phone %}<span class="mono">{{ clinic.clinic_phone }}</span>{% endif %}</div>
+      </div>
+    </header>
+    <div class="doc-title">
+      <h1>{{ title }}</h1>
+      {% if params %}<div class="doc-params">{% for p in params %}<span>{{ p }}</span>{% endfor %}</div>{% endif %}
+    </div>
+{% block content %}{% endblock %}
+    <footer class="doc-foot">
+      <span>تهیه‌شده در {{ generated }} · {{ by }}</span>
+      <span>{{ clinic.clinic_name }}</span>
+    </footer>
+  </article>
+</body>
+</html>
