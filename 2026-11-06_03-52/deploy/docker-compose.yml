@@ -1,0 +1,103 @@
+# Production stack for one clinic: MySQL, the Django backend (gunicorn), the worker (SMS, nightly backup) and
+# Caddy (HTTPS, the built Vue app, the only service the internet reaches). Run it through deploy/deploy.sh:
+#   bash <release>/deploy/deploy.sh
+# Settings come from the clinic's own .env (default /opt/clinic-data/.env, passed with --env-file):
+#   DOMAIN, DATA_PATH (absolute, outside the release), TZ, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD, DJANGO_SECRET_KEY.
+# The fixed project name keeps the same containers, the MySQL volume and the certificate volume when a new release
+# folder is deployed. It is the name the old app used, so the certificates carry over at the cutover.
+# Nothing is built on the server. The images come finished from tools/build-images.sh; deploy/images.lock names them
+# and is the second --env-file, and deploy/fetch-images.sh puts them on the server first. `pull_policy: never`: a
+# missing image is an error, never a download from somewhere else.
+name: clinic
+
+x-backend: &backend
+  image: ${BACKEND_IMAGE:?pass --env-file deploy/images.lock}
+  pull_policy: never
+  restart: unless-stopped
+  # Ordinary non-root process (uid 10001): no Linux capabilities, never gains any.
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  environment:
+    DJANGO_SETTINGS_MODULE: klerk.settings.prod
+    DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY in .env}
+    DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    MYSQL_HOST: mysql
+    MYSQL_DATABASE: klerk
+    MYSQL_USER: klerk
+    MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+    DATA_DIR: /data
+    TZ: ${TZ:-Asia/Tehran}   # the nightly backup runs at 03:00 in this time zone
+  volumes:
+    # Patient files, backups, trash, sms.key. Lives outside every release folder (DATA_PATH in .env).
+    - ${DATA_PATH:?set DATA_PATH in .env}:/data
+  logging: &logs
+    driver: json-file
+    options: { max-size: "10m", max-file: "5" }
+
+services:
+  mysql:
+    extends:
+      file: mysql.yml
+      service: mysql
+    image: ${MYSQL_IMAGE:?pass --env-file deploy/images.lock}   # the copy of mysql.yml's image on ghcr.io
+    pull_policy: never
+    restart: unless-stopped
+    volumes:
+      # The database. `docker compose down -v` deletes it: never use -v on a server.
+      - mysql_data:/var/lib/mysql
+    logging: *logs
+
+  backend:
+    <<: *backend
+    # No `ports:`. gunicorn is reachable only from Caddy on the internal network; the backend trusts
+    # X-Forwarded-For/-Proto from private addresses, so a published port would let a client choose its own IP.
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,urllib.request as u; r=u.Request('http://127.0.0.1:8000/health', headers={'Host': os.environ['DOMAIN']}); assert u.urlopen(r, timeout=3).read() == b'ok'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  worker:
+    <<: *backend
+    command: ["python", "manage.py", "run_worker"]
+    # Healthy while the heartbeat file is younger than 3 minutes (it is written every minute). The first start
+    # may write a backup before the first tick, hence the long start period.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,time; assert time.time() - os.path.getmtime('/data/worker.heartbeat') < 180"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 900s
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  caddy:
+    image: ${WEB_IMAGE:?pass --env-file deploy/images.lock}   # Caddy with the built Vue app (caddy.Dockerfile)
+    pull_policy: never
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data        # certificates; losing this only means a new certificate is requested
+      - caddy_config:/config
+    depends_on:
+      backend:
+        condition: service_healthy
+    logging: *logs
+
+volumes:
+  mysql_data:
+  caddy_data:
+  caddy_config:
