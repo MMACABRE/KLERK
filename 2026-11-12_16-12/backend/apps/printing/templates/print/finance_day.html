@@ -1,0 +1,30 @@
+{% extends "print/base.html" %}
+{% block content %}
+    {% if not rows %}
+    <div class="doc-empty">در این روز پرداختی ثبت نشده است.</div>
+    {% else %}
+    <table class="doc-table">
+      <thead><tr><th>#</th><th>بیمار</th><th>ویزیت</th><th>نوع</th><th>روش</th><th>حساب</th><th class="num">مبلغ</th></tr></thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td>{{ r.n }}</td>
+          <td>{{ r.name }}<span class="sub mono">{{ r.code }}</span></td>
+          <td>{{ r.visit }}</td>
+          <td>{{ r.kind }}</td>
+          <td>{{ r.method }}</td>
+          <td>{{ r.account }}</td>
+          <td class="num"><span class="money{% if r.neg %} neg{% endif %}">{{ r.amount }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot><tr><td colspan="6">درآمد خالص روز</td><td class="num"><span class="money">{{ total }}</span></td></tr></tfoot>
+    </table>
+    <h2>جمع به تفکیک روش پرداخت</h2>
+    <table class="doc-table"><tbody>{% for k, v in by_method %}<tr><td>{{ k }}</td><td class="num"><span class="money">{{ v }}</span></td></tr>{% endfor %}</tbody></table>
+    <h2>جمع به تفکیک حساب</h2>
+    <table class="doc-table"><tbody>{% for k, v in by_account %}<tr><td>{{ k }}</td><td class="num"><span class="money">{{ v }}</span></td></tr>{% endfor %}</tbody></table>
+    <dl class="doc-totals"><div><dt>تعداد ردیف</dt><dd>{{ count }}</dd></div><div class="is-main"><dt>درآمد خالص روز</dt><dd>{{ total }}</dd></div></dl>
+    {% endif %}
+    <p class="doc-note">پیش‌پرداخت در روز پرداخت حساب می‌شود، نه روز ویزیت. انتقال اعتبار بین ویزیت‌ها درآمد نیست و در این گزارش نمی‌آید.</p>
+{% endblock %}
