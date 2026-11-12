@@ -1,0 +1,31 @@
+{% extends "print/base.html" %}
+{% block content %}
+    <div class="doc-kv">
+      <div><b>بیمار:</b> <span>{{ name }}</span></div>
+      <div><b>کد:</b> <span class="mono">{{ code }}</span></div>
+      <div><b>ساعت:</b> <span class="mono">{{ time }}</span></div>
+    </div>
+    {% if not lines %}
+    <div class="doc-empty">ردیفی در این صورتحساب نیست.</div>
+    {% else %}
+    <table class="doc-table">
+      <thead><tr><th>شرح</th><th class="num">تعداد</th><th class="num">قیمت واحد</th><th class="num">تخفیف</th><th class="num">مبلغ</th></tr></thead>
+      <tbody>
+        {% for l in lines %}<tr><td>{{ l.name }}</td><td class="num">{{ l.qty }}</td><td class="num"><span class="money">{{ l.price }}</span></td><td class="num">{% if l.disc != '—' %}<span class="money">{{ l.disc }}</span>{% else %}—{% endif %}</td><td class="num"><span class="money">{{ l.net }}</span></td></tr>{% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    <dl class="doc-totals">
+      <div><dt>جمع کل</dt><dd>{{ gross }}</dd></div>
+      <div><dt>تخفیف</dt><dd>{{ discount }}</dd></div>
+      <div><dt>پرداخت‌شده</dt><dd>{{ paid }}</dd></div>
+      <div class="is-main"><dt>{{ rest_label }}</dt><dd>{{ rest }}</dd></div>
+    </dl>
+    {% if pays %}
+    <h2>پرداخت‌ها</h2>
+    <table class="doc-table">
+      <tbody>{% for p in pays %}<tr><td>{{ p.date }}</td><td>{{ p.kind }}</td><td>{{ p.method }}</td><td class="num"><span class="money">{{ p.amount }}</span></td></tr>{% endfor %}</tbody>
+    </table>
+    {% endif %}
+    {% if cancelled %}<p class="doc-note">این ویزیت لغو شده است و بدهی ندارد.</p>{% endif %}
+{% endblock %}
