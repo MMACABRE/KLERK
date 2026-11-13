@@ -1,0 +1,25 @@
+# The MySQL service shared by docker-compose.yml (production) and docker-compose.dev.yml (`extends`), so both run
+# with the same server settings. Settings are flags, not a config file: MySQL ignores a world-writable config file,
+# and Docker Desktop bind mounts from Windows always look world-writable. Collation utf8mb4_0900_bin (NO PAD,
+# ADR-0012), READ-COMMITTED (SPEC §4.3), strict SQL mode, no binary log.
+services:
+  mysql:
+    image: mysql:8.4.13
+    environment:
+      MYSQL_DATABASE: klerk
+      MYSQL_USER: klerk
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_bin
+      - --transaction-isolation=READ-COMMITTED
+      - --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION,ONLY_FULL_GROUP_BY
+      - --skip-log-bin
+    healthcheck:
+      # TCP, not the socket: during first-start init MySQL runs a temporary server with
+      # networking off that answers on the socket, so a socket ping reports healthy too early.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--protocol=tcp"]
+      interval: 5s
+      timeout: 5s
+      retries: 30

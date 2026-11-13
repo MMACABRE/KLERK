@@ -1,0 +1,60 @@
+{% extends "print/base.html" %}
+{% block content %}
+    {% if not blocks %}
+    <div class="doc-empty">در این روز ویزیتی ثبت نشده است.</div>
+    {% else %}
+    <table class="doc-table report-table">
+      <thead><tr><th>شرح</th><th class="num">تعداد</th><th class="num">قیمت واحد</th><th class="num">مبلغ</th></tr></thead>
+      {% for v in blocks %}
+      <tbody class="report-visit">
+        <tr class="report-head">
+          <td colspan="4">
+            <span class="report-n">{{ v.n }}</span>
+            <span class="mono">{{ v.code }}</span> · <b>{{ v.name }}</b>
+            <span class="report-time"><span class="report-time-label">ساعت</span> <span class="mono">{{ v.time }}</span></span>
+            <span class="report-reason">علت مراجعه: {{ v.reason }}</span>
+          </td>
+        </tr>
+        {% if not v.lines %}<tr><td colspan="4" class="report-muted">خدمت یا کالایی ثبت نشده است.</td></tr>{% endif %}
+        {% for l in v.lines %}
+        <tr{% if l.item %} class="report-item"{% endif %}>
+          <td>{{ l.name }} <span class="report-kind">{{ l.kind }}</span>{% if l.disc %}<span class="sub">تخفیف ردیف: <span class="money">{{ l.disc }}</span></span>{% endif %}</td>
+          <td class="num">{{ l.qty }}</td>
+          <td class="num"><span class="money">{{ l.price }}</span></td>
+          <td class="num"><span class="money">{{ l.net }}</span></td>
+        </tr>
+        {% endfor %}
+        {% if v.bill_disc %}<tr><td colspan="3">تخفیف کل صورتحساب</td><td class="num"><span class="money neg">{{ v.bill_disc }}</span></td></tr>{% endif %}
+        <tr class="report-owed">
+          <td colspan="3"><div class="report-settle">
+            <b>قابل پرداخت</b>
+            {% if not v.pays %}<span class="report-muted">پرداختی ثبت نشده است.</span>{% endif %}
+            {% for p in v.pays %}<span class="report-pay">{{ p.label }}{% if p.date %} <span class="report-date">({{ p.date }})</span>{% endif %} <span class="money{% if p.neg %} neg{% endif %}">{{ p.amount }}</span></span>{% endfor %}
+            {% if v.rest_label %}<span class="report-rest">{{ v.rest_label }} <span class="money">{{ v.rest }}</span></span>{% endif %}
+          </div></td>
+          <td class="num"><span class="money">{{ v.owed }}</span></td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+    <div class="report-sums">
+    <div>
+    <h2>جمع به تفکیک حساب</h2>
+    <table class="doc-table">
+      <tbody>
+        {% for k, n, neg in by_account %}<tr><td>{{ k }}</td><td class="num"><span class="money{% if neg %} neg{% endif %}">{{ n }}</span></td></tr>{% endfor %}
+        {% if not by_account %}<tr><td colspan="2" class="report-muted">برای ویزیت‌های این روز پرداختی ثبت نشده است.</td></tr>{% endif %}
+      </tbody>
+      {% if by_account %}<tfoot><tr><td>جمع حساب‌ها</td><td class="num"><span class="money">{{ account_total }}</span></td></tr></tfoot>{% endif %}
+    </table>
+    </div>
+    <dl class="doc-totals">
+      <div><dt>جمع قابل پرداخت</dt><dd>{{ totals.owed }}</dd></div>
+      <div><dt>جمع مانده</dt><dd>{{ totals.remaining }}</dd></div>
+      {% if has_credit %}<div><dt>جمع بستانکار</dt><dd>{{ totals.credit }}</dd></div>{% endif %}
+      <div class="is-main"><dt>جمع پرداخت‌شده</dt><dd>{{ totals.paid }}</dd></div>
+    </dl>
+    </div>
+    {% endif %}
+    <p class="doc-note">ردیف‌های رنگی کالا هستند (از انبار)؛ ردیف‌های ساده خدمت‌اند. این گزارش بر اساس روز ویزیت است: پرداخت هر ویزیت، حتی اگر روز دیگری انجام شده باشد (مثل پیش‌پرداخت)، زیر همان ویزیت می‌آید و تاریخش در پرانتز است. انتقال اعتبار بین ویزیت‌ها حساب ندارد و در جمع حساب‌ها نمی‌آید. درآمد خود همین روز در «گزارش مالی روزانه» است.</p>
+{% endblock %}
