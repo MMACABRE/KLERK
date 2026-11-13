@@ -1,0 +1,24 @@
+{% extends "print/base.html" %}
+{% block content %}
+    {% if not rows %}
+    <div class="doc-empty">در این بازه کالایی در ویزیت‌ها مصرف نشده است.</div>
+    {% elif by_patient %}
+    <table class="doc-table">
+      <thead><tr><th>بیمار</th><th>تاریخ ویزیت</th><th>کالا</th><th class="num">تعداد</th><th class="num">مبلغ</th></tr></thead>
+      <tbody>
+        {% for r in rows %}<tr><td>{{ r.name }}<span class="sub mono">{{ r.code }}</span></td><td>{{ r.day }}</td><td>{{ r.item }}</td><td class="num">{{ r.qty }}</td><td class="num"><span class="money">{{ r.amount }}</span></td></tr>{% endfor %}
+      </tbody>
+      <tfoot><tr><td colspan="3">جمع</td><td class="num">{{ total_qty }}</td><td class="num"><span class="money">{{ total_amount }}</span></td></tr></tfoot>
+    </table>
+    {% else %}
+    <table class="doc-table">
+      <thead><tr><th>کالا</th><th class="num">تعداد</th><th class="num">مبلغ فروش</th></tr></thead>
+      <tbody>
+        {% for r in rows %}<tr><td>{{ r.item }}</td><td class="num">{{ r.qty }}</td><td class="num"><span class="money">{{ r.amount }}</span></td></tr>{% endfor %}
+      </tbody>
+      <tfoot><tr><td>جمع</td><td class="num">{{ total_qty }}</td><td class="num"><span class="money">{{ total_amount }}</span></td></tr></tfoot>
+    </table>
+    {% endif %}
+    {% if rows %}<dl class="doc-totals"><div><dt>تعداد کل</dt><dd>{{ total_qty }}</dd></div><div class="is-main"><dt>مبلغ کل</dt><dd>{{ total_amount }}</dd></div></dl>{% endif %}
+    <p class="doc-note">مبلغ پس از تخفیف ردیف است. ویزیت‌های لغوشده حساب نمی‌شوند، چون کالایشان به انبار برگشته است.</p>
+{% endblock %}

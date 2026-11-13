@@ -1,0 +1,7 @@
+/* Additions of the new app that the legacy stylesheets do not have. Built from existing tokens only. */
+
+/* Diagnostics feed is on (ADR-0013): the owner's header chip and the state chip on «عیب‌یابی». Terracotta, the
+   second accent, so it reads as "attention, by choice" next to the green. Dark mode comes from the tokens. */
+.chip-terra { background: var(--terra-tint); color: var(--terra-text); }
+.chip-terra::before { background: var(--terra); }
+a.chip-terra { text-decoration: none; }
