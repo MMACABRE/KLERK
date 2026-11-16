@@ -1,0 +1,43 @@
+{% extends "print/base.html" %}
+{% block content %}
+    {% if not see.visits and not see.finance and not see.storage %}
+    <div class="doc-empty">شما اجازه‌ی دسترسی به این بخش را ندارید.</div>
+    {% endif %}
+    {% if summary %}{% include "print/_summary.html" %}{% endif %}
+    {% if see.visits %}
+    <h2>ویزیت‌ها</h2>
+    {% if not visits %}<div class="doc-empty">در این روز ویزیتی ثبت نشده است.</div>{% else %}
+    <table class="doc-table report-table">
+      <thead><tr><th>#</th><th>ساعت</th><th>بیمار</th><th>علت مراجعه</th>{% if see.finance %}<th class="num">مبلغ</th>{% endif %}</tr></thead>
+      <tbody>{% for v in visits %}<tr><td>{{ v.n }}</td><td class="mono">{{ v.time }}</td><td>{{ v.name }}<span class="sub mono">{{ v.code }}</span></td><td>{{ v.reason }}</td>{% if see.finance %}<td class="num"><span class="money">{{ v.owed }}</span></td>{% endif %}</tr>{% endfor %}</tbody>
+    </table>
+    {% endif %}{% endif %}
+    {% if pay %}
+    <h2>پرداخت‌ها</h2>
+    {% if not pay.rows %}<div class="doc-empty">در این روز پرداختی ثبت نشده است.</div>{% else %}
+    <table class="doc-table report-table">
+      <thead><tr><th>#</th><th>بیمار</th><th>نوع</th><th>روش</th><th>حساب</th><th class="num">مبلغ</th></tr></thead>
+      <tbody>{% for r in pay.rows %}<tr><td>{{ r.n }}</td><td>{{ r.name }}<span class="sub mono">{{ r.code }}</span></td><td>{{ r.kind }}</td><td>{{ r.method }}</td><td>{{ r.account }}</td><td class="num"><span class="money{% if r.neg %} neg{% endif %}">{{ r.amount }}</span></td></tr>{% endfor %}</tbody>
+      <tfoot><tr><td colspan="5">درآمد خالص روز</td><td class="num"><span class="money">{{ pay.total }}</span></td></tr></tfoot>
+    </table>
+    <h2>جمع به تفکیک حساب</h2>
+    <table class="doc-table report-table"><tbody>{% for k, v in pay.by_account %}<tr><td>{{ k }}</td><td class="num"><span class="money">{{ v }}</span></td></tr>{% endfor %}</tbody></table>
+    {% endif %}{% endif %}
+    {% if unpaid is not None %}
+    {% include "print/_unpaid.html" %}
+    {% endif %}
+    {% if stock is not None %}
+    <h2>کالاهای مصرف‌شده</h2>
+    {% if not stock %}<div class="doc-empty">در این روز کالایی در ویزیت‌ها مصرف نشده است.</div>{% else %}
+    <table class="doc-table report-table">
+      <thead><tr><th>کالا</th><th class="num">تعداد بیمار</th><th class="num">تعداد مصرف</th>{% if see.finance %}<th class="num">مبلغ</th>{% endif %}</tr></thead>
+      <tbody>{% for r in stock %}<tr><td>{{ r.item }}</td><td class="num">{{ r.patients }}</td><td class="num">{{ r.qty }}</td>{% if see.finance %}<td class="num"><span class="money">{{ r.amount }}</span></td>{% endif %}</tr>{% endfor %}</tbody>
+    </table>
+    {% endif %}{% endif %}
+    {% if alerts is not None %}
+    <h2>هشدارها</h2>
+    {% if not alerts %}<div class="doc-empty">هشداری نیست.</div>{% else %}
+    <table class="doc-table report-table"><tbody>{% for a in alerts %}<tr><td>{{ a.name }}</td><td>{{ a.text }}</td></tr>{% endfor %}</tbody></table>
+    {% endif %}{% endif %}
+    <p class="doc-note">پرداخت‌ها بر اساس روز پرداخت و ویزیت‌ها بر اساس روز ویزیت هستند. ویزیت‌های لغوشده حساب نمی‌شوند. هشدارهای انبار وضعیت امروز است.</p>
+{% endblock %}

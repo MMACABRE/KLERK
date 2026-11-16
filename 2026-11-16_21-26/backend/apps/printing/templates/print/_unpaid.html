@@ -1,0 +1,13 @@
+{% comment %}
+Who still owes for this day's visits (owner, 2026-11-16): each visit of the day that is not fully paid, with the
+patient, the bill, what was paid and what is left; the total equals «مانده‌ی پرداخت‌نشده» in the summary. Used by the
+daily finance report and the full daily print. Needs `unpaid` {rows, total}.
+{% endcomment %}
+    <h2>مانده‌ی پرداخت‌نشده</h2>
+    {% if not unpaid.rows %}<div class="doc-empty">همه‌ی ویزیت‌های این روز پرداخت شده‌اند.</div>{% else %}
+    <table class="doc-table unpaid-table">
+      <thead><tr><th>بیمار</th><th>کد</th><th>ساعت ویزیت</th><th class="num">مبلغ</th><th class="num">پرداخت</th><th class="num">مانده</th></tr></thead>
+      <tbody>{% for u in unpaid.rows %}<tr><td>{{ u.name }}</td><td class="mono">{{ u.code }}</td><td class="mono">{{ u.time }}</td><td class="num"><span class="money">{{ u.owed }}</span></td><td class="num"><span class="money">{{ u.paid }}</span></td><td class="num"><span class="money">{{ u.rest }}</span></td></tr>{% endfor %}</tbody>
+      <tfoot><tr><td colspan="5">جمع مانده‌ی پرداخت‌نشده</td><td class="num"><span class="money">{{ unpaid.total }}</span></td></tr></tfoot>
+    </table>
+    {% endif %}

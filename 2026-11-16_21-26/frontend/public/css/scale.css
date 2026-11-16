@@ -1,0 +1,98 @@
+/* Fluid scale for desktop windows (owner request 2026-11-13).
+   Loaded after the legacy CSS; it changes sizes only, never colours or shapes.
+   - Width: every size token reaches its legacy value at 1920 px and shrinks linearly to ~60 % (spacing) or
+     ~80-85 % (text) at 1000 px, so smaller monitors and windows get a denser layout.
+   - Height: the sidebar's spacing follows the window height so every link always fits without a scroll bar.
+   Phones (<= 900 px) keep the legacy sizes and the bottom tab bar. Touch screens keep 44 px controls. */
+
+@media (min-width: 901px) {
+  :root {
+    --fs-xs: clamp(10.2px, 8.243px + 0.1957vw, 12px);
+    --fs-sm: clamp(11.47px, 9.274px + 0.2201vw, 13.5px);
+    --fs-md: clamp(12px, 8.739px + 0.3261vw, 15px);
+    --fs-lg: clamp(13.6px, 9.904px + 0.3696vw, 17px);
+    --fs-xl: clamp(16.8px, 12.23px + 0.4565vw, 21px);
+    --fs-2xl: clamp(17.36px, 5.795px + 1.157vw, 28px);
+    --fs-3xl: clamp(29.76px, 9.934px + 1.983vw, 48px);
+    --fs-display: clamp(28.52px, 9.52px + 1.9vw, 46px);
+    --sp-1: clamp(2.4px, 0.6609px + 0.1739vw, 4px);
+    --sp-2: clamp(4.8px, 1.322px + 0.3478vw, 8px);
+    --sp-3: clamp(7.2px, 1.983px + 0.5217vw, 12px);
+    --sp-4: clamp(9.6px, 2.643px + 0.6957vw, 16px);
+    --sp-5: clamp(14.4px, 3.965px + 1.043vw, 24px);
+    --sp-6: clamp(19.2px, 5.287px + 1.391vw, 32px);
+    --sp-7: clamp(24px, 6.609px + 1.739vw, 40px);
+    --sp-8: clamp(33.6px, 9.252px + 2.435vw, 56px);
+    --sp-9: clamp(43.2px, 11.9px + 3.13vw, 72px);
+    --pad: clamp(16.8px, 4.626px + 1.217vw, 28px);
+    --section: clamp(24px, 6.609px + 1.739vw, 40px);
+    --ctl-h: clamp(32px, 23.3px + 0.8696vw, 40px);
+    /* dashboard sizes that the legacy CSS writes in pixels */
+    --qa-row: clamp(81.84px, 27.32px + 5.452vw, 132px);
+    --qa-ic: clamp(27.28px, 9.106px + 1.817vw, 44px);
+    --qa-ic-l: clamp(39.68px, 13.25px + 2.643vw, 64px);
+    --dash-row: clamp(91.76px, 30.63px + 6.113vw, 148px);
+    --clock-fs: clamp(26.04px, 8.692px + 1.735vw, 42px);
+    --head-p: clamp(13.6px, 10.99px + 0.2609vw, 16px);
+  }
+
+  /* ---------- Sidebar: always shows every link, sized by the window height ----------
+     The nav takes the height left between the brand and the foot; each link starts at 40 px and shrinks
+     to 26 px before anything could overflow, so the sidebar never needs a scroll bar. */
+  .sidebar {
+    padding-block: clamp(8px, 2vh, 24px);
+    gap: clamp(6px, 1.8vh, 40px);
+  }
+  .brand-mark { width: clamp(24px, 4.4vh, 34px); height: clamp(24px, 4.4vh, 34px); }
+  .nav { flex: 1 1 auto; min-height: 0; gap: clamp(0px, 0.3vh, 2px); }
+  .nav-label { flex: none; margin-block: clamp(4px, 2vh, 32px) clamp(2px, 0.9vh, 12px); }
+  .nav a {
+    flex: 0 1 40px; min-height: 26px; padding-block: 0;
+    font-size: min(var(--fs-sm), clamp(12px, 1.9vh, 13.5px));
+  }
+  .nav a .icon { width: clamp(15px, 2.4vh, 18px); height: clamp(15px, 2.4vh, 18px); }
+  .sidebar-foot { flex: none; }
+  .user-chip { padding-block: clamp(2px, 0.8vh, 8px); }
+
+  /* ---------- Wide windows: pages use the whole width ---------- */
+  .content { max-width: none; }
+
+  /* ---------- Dashboard ---------- */
+  .qa-grid { grid-auto-rows: minmax(var(--qa-row), auto); }
+  .qa-icon { width: var(--qa-ic); height: var(--qa-ic); border-radius: calc(var(--qa-ic) * .27); }
+  .qa-icon .icon { width: calc(var(--qa-ic) / 2); height: calc(var(--qa-ic) / 2); }
+  .qa-primary .qa-icon { width: var(--qa-ic-l); height: var(--qa-ic-l); border-radius: calc(var(--qa-ic-l) * .28); }
+  .qa-primary .qa-icon .icon { width: calc(var(--qa-ic-l) / 2); height: calc(var(--qa-ic-l) / 2); }
+  .qa-primary::after { width: calc(var(--qa-ic-l) * 2.35); height: calc(var(--qa-ic-l) * 2.35); }
+  .dash-grid { grid-auto-rows: minmax(var(--dash-row), auto); }
+  .clock-time { font-size: var(--clock-fs); }
+  .page-head p { font-size: var(--head-p); }
+  .page-head .clock-card { flex-basis: clamp(200px, 3vw + 170px, 300px); }
+}
+
+/* icon-only sidebar between 901 and 1200 px */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .nav a { padding-block: 0; }
+}
+
+/* Wide windows: the dashboard gets more columns so widgets sit side by side instead of leaving empty space.
+   A widget keeps its saved size (1, 2 or 4 columns); "4 wide" means 4 columns, not the whole row. */
+@media (min-width: 1700px) {
+  .dash-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .dash-cell[data-size^="4x"] { grid-column: span 4; }
+}
+@media (min-width: 2300px) {
+  .dash-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+}
+
+/* very short windows: drop the section labels so the links keep a usable size */
+@media (min-width: 901px) and (max-height: 560px) {
+  .nav-label { display: none; }
+  .user-chip > div { display: none; }
+}
+
+/* touch screens keep the 44 px tap targets */
+@media (min-width: 901px) and (pointer: coarse) {
+  :root { --ctl-h: 44px; }
+  .nav a { min-height: 44px; }
+}
