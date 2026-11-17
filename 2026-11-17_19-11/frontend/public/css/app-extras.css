@@ -1,0 +1,144 @@
+/* Additions of the new app that the legacy stylesheets do not have. Built from existing tokens only. */
+
+/* Diagnostics feed is on (ADR-0013): the owner's header chip and the state chip on «عیب‌یابی». Terracotta, the
+   second accent, so it reads as "attention, by choice" next to the green. Dark mode comes from the tokens. */
+.chip-terra { background: var(--terra-tint); color: var(--terra-text); }
+.chip-terra::before { background: var(--terra); }
+a.chip-terra { text-decoration: none; }
+
+/* Dashboard layout v2 (ADR-0014): outside edit mode each item sits at its saved cell on an 8-column grid from
+   1200 px. Vue sets --x, --y, --w and --h through the CSSOM (CSP allows it; there is no style attribute in the
+   markup). Narrower windows keep the v1 flow in reading order. Tiles are app icons: 1 cell shows the icon and
+   title, a 2x2 tile is drawn like the large «ثبت بیمار جدید» button and shows its line of text. */
+.dash-v2 > .dash-cell[data-tile] > .qa-tile { justify-content: center; }
+.dash-v2 > .dash-cell[data-tile]:not([data-size="2x2"]) .qa-text > span { display: none; }
+/* Packed order (owner decision 2026-11-16, SPEC §14.2): from 1200 px the view and the editor show the same grid.
+   Vue counts the columns from the grid's width (8 up to the room for nine 120 px columns, then one more per 120 px,
+   at most 16; zooming out widens the grid, so more cards fit per row instead of growing) and places each card at
+   the cell `pack` gives it (--x, --y, --w, --h), so cards fill every gap and the editor and the view match. */
+@media (min-width: 1200px) {
+  .dash-grid.dash-v2 { grid-template-columns: repeat(var(--cols, 8), minmax(0, 1fr)); grid-auto-rows: clamp(150px, 104px + 3.6vw, 176px); grid-auto-flow: row; }
+  .dash-v2 > .dash-cell { grid-column: var(--x) / span var(--w); grid-row: var(--y) / span var(--h); min-height: 0; }
+  /* Rows have a fixed height (the card's h decides its height, never its content), so the editor and the view are
+     the same geometry; a card with more content than room scrolls inside itself. */
+  .dash-v2 > .dash-cell > :is(.card, .qa-tile, .pl-locked) { flex: 1 1 auto; min-height: 0; overflow: auto; }
+  /* Tiles and number cards never scroll (owner, 2026-11-16): they are drawn to fit; only list widgets scroll. */
+  .dash-v2 > .dash-cell > :is(.qa-tile, .stat, .income-today) { overflow: hidden; }
+  /* inside a scrolling card a focus ring sits inside the element, so the card edge never cuts it off */
+  .dash-v2 > .dash-cell :focus-visible { outline-offset: -2px; }
+}
+/* 600 to 1199 px: 4 columns, items in reading order (the server sorts them), no holes. */
+@media (max-width: 1199px) {
+  .dash-grid.dash-v2 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .dash-v2 > .dash-cell[data-size^="3x"] { grid-column: span 3; }
+  .dash-v2 > .dash-cell[data-size^="4x"] { grid-column: span 4; }
+}
+/* Under 600 px: each widget and each 2x2 tile on its own row; other tiles one cell each, four to a row like a phone
+   home screen. */
+@media (max-width: 599px) {
+  .dash-v2 > .dash-cell:not([data-tile]) { grid-column: 1 / -1; }
+  .dash-v2 > .dash-cell[data-tile] { grid-column: span 1; grid-row: span 1; }
+  .dash-v2 > .dash-cell[data-tile][data-size="2x2"] { grid-column: 1 / -1; }
+  .dash-v2 > .dash-cell[data-tile]:not([data-size="2x2"]) > .qa-tile { padding: var(--sp-2); gap: var(--sp-2); align-items: center; text-align: center; min-height: 0; }
+  .dash-v2 > .dash-cell[data-tile]:not([data-size="2x2"]) .qa-text b { font-size: var(--fs-xs); }
+}
+
+/* Layout v2 editor (1200 px and wider): the same rows and columns as the view; the dragged card leaves a dashed
+   spot (.pl-ph) where it will land while its ghost follows the pointer, and a resize handle sits in the bottom
+   inline-end corner. */
+.dash-v2.is-editing > .dash-cell { position: relative; }
+/* The editor's tools lie over the card instead of adding height, so each card is as tall as in the view and the
+   rows match (Reviewer batch 8): the widget head floats over the card's top, the tile keeps its view padding. */
+.dash-v2.is-editing > .dash-cell > .pl-w-head { position: absolute; inset-block-start: 6px; inset-inline: 6px; z-index: 3; margin: 0; box-shadow: var(--shadow-xs); }
+.dash-v2.is-editing > .dash-cell[data-tile] > .qa-tile { padding-block-start: var(--sp-5); }
+.pl-resize {
+  position: absolute; inset-block-end: 4px; inset-inline-end: 4px; z-index: 3; width: 24px; height: 24px; padding: 0;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--surface); box-shadow: var(--shadow-xs);
+  cursor: nwse-resize; touch-action: none;
+}
+[dir="rtl"] .pl-resize { cursor: nesw-resize; }
+.pl-resize::after {
+  content: ""; position: absolute; inset: 6px;
+  border-block-end: 2px solid var(--text-3); border-inline-end: 2px solid var(--text-3); border-end-end-radius: 2px;
+}
+.pl-resize:hover { border-color: var(--accent-line); }
+.dash-v2.is-editing .pl-grip { touch-action: none; }
+.pl-add-v2 { margin-block-start: var(--sp-5); }
+
+/* «فرم‌های چاپی» widget (ADR-0014 step 4): one day field, then one link per print form. */
+.pf-list { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: var(--sp-1); }
+.pf-list a { display: flex; align-items: center; gap: var(--sp-2); min-height: 44px; padding-inline: var(--sp-2); border-radius: var(--radius); color: var(--text); }
+.pf-list a:hover { background: var(--raised); text-decoration: none; }
+.pf-list .icon { width: 18px; height: 18px; flex: none; color: var(--accent-text); }
+.dash-cell[data-widget="print_forms"] .card-body { overflow: auto; }
+
+/* Upload of up to 20 files (SPEC 14.5.1-14.5.2): one preview card per file before upload, one per row under
+   600 px, two from 600 px, four from 1200 px. The preview is a canvas drawn in the browser (contain, >= 240 px). */
+.upload-form > .upload-note { grid-column: 1 / -1; margin: 0; }
+.up-list { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 600px) { .up-list { grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); } }
+@media (min-width: 1200px) { .up-list { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+.up-card { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); overflow: hidden; }
+.up-card.up-failed, .up-card.up-refused { border-color: var(--crit-fg); }
+.up-card.up-done { border-color: var(--accent-line); }
+.up-media { display: grid; place-items: center; min-block-size: 240px; background: var(--surface-2); }
+.up-canvas { display: block; inline-size: 100%; block-size: 240px; object-fit: contain; }
+.up-body { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3); }
+.up-head { display: flex; align-items: center; gap: var(--sp-2); }
+.up-name { flex: 1; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-sm); }
+.up-x { min-inline-size: 44px; min-block-size: 44px; justify-content: center; padding: 0; }
+.up-size { font: 500 var(--fs-xs)/1.4 var(--font-mono); color: var(--text-3); }
+.up-retry { min-block-size: 44px; align-self: flex-start; }
+.up-state { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin: 0; }
+
+/* Document folders (SPEC 14.5.4): the folder bar wraps (no horizontal scroll), the open folder's tools, the chip
+   under a dragged card, a picked card, the selection bar (sticky; above the bottom tab bar under 900 px) and the
+   label that follows the pointer while dragging (its place comes from --gx/--gy, set through the CSSOM). */
+.folder-bar { display: flex; flex-direction: column; gap: var(--sp-3); padding: 14px var(--pad); border-bottom: 1px solid var(--border-subtle); }
+.folder-chips { margin: 0; padding: 0; list-style: none; }
+.folder-chips .chip-filter { display: inline-flex; align-items: center; gap: 6px; }
+.folder-chips .chip-filter .icon { width: 15px; height: 15px; }
+.folder-bar .folder-name { display: inline-block; max-inline-size: 18ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.folder-chips .chip-filter.is-drop { background: var(--terra-tint); border-color: var(--terra); color: var(--terra-text); outline: 2px dashed var(--terra); outline-offset: 2px; }
+.folder-new { border-style: dashed; }
+/* Windows-style folders (owner, 2026-11-16): a folder is a card in the gallery, before the loose files, drawn like a
+   file card with a large folder icon; inside a folder the bar shows the path «اسناد › <folder>». */
+.folder-tile { padding: 0; font: inherit; color: inherit; text-align: start; cursor: pointer; }
+.folder-tile:hover { border-color: var(--accent-line); }
+.folder-tile:hover .doc-media-file { background: var(--accent-tint); color: var(--accent-text); }
+.folder-tile .doc-type .icon { color: var(--terra); }
+.folder-tile .doc-type b { letter-spacing: normal; text-transform: none; }
+.folder-tile .doc-name { display: block; max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.folder-tile.is-drop { border-color: var(--terra); background: var(--terra-tint); outline: 2px dashed var(--terra); outline-offset: 2px; }
+.folder-path { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.folder-path .folder-sep { color: var(--text-3); }
+.folder-path .btn.is-drop { background: var(--terra-tint); border-color: var(--terra); color: var(--terra-text); outline: 2px dashed var(--terra); outline-offset: 2px; }
+.folder-form, .folder-open { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.folder-form .input { inline-size: min(100%, 22em); }
+.folder-form .field-error { flex-basis: 100%; margin: 0; }
+.doc-tile { position: relative; }
+.doc-tile.is-selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-line); }
+.doc-pick { position: absolute; inset-block-start: var(--sp-2); inset-inline-start: var(--sp-2); z-index: 2; padding: 6px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); }
+.doc-sub .icon { width: 13px; height: 13px; vertical-align: -2px; }
+.select-bar {
+  position: sticky; inset-block-end: var(--sp-3); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3);
+  margin: 0 var(--pad) var(--pad); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--accent-line); border-radius: var(--radius-lg);
+  background: var(--surface); box-shadow: var(--shadow);
+}
+.select-bar > span { flex: 1; font-weight: 600; }
+@media (max-width: 900px) { .select-bar { inset-block-end: calc(80px + env(safe-area-inset-bottom)); } }
+.doc-ghost {
+  /* physical left on purpose: the pointer's clientX/clientY are physical in both directions */
+  position: fixed; inset-block-start: 0; left: 0; z-index: 100; pointer-events: none;
+  transform: translate(calc(var(--gx, 0px) + 12px), calc(var(--gy, 0px) + 12px));
+  padding: 6px 12px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600; box-shadow: var(--shadow);
+}
+body.is-dragging-doc, body.is-dragging-doc * { cursor: grabbing; user-select: none; }
+
+/* A native <dialog> as an app card (document edit). */
+.app-dialog { inline-size: min(560px, calc(100% - 32px)); max-block-size: calc(100% - 32px); padding: 0; border: 0; background: transparent; color: var(--text); }
+.app-dialog::backdrop { background: rgba(10, 16, 13, .45); }
+.app-dialog > .card { margin: 0; box-shadow: var(--shadow); }
+
+/* «ارسال تکی»: the finished message as it will be sent, drawn like a message bubble. */
+.sms-preview { margin: var(--sp-2) 0 0; padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-lg); background: var(--accent-tint); color: var(--text); white-space: pre-wrap; line-height: 1.8; max-inline-size: 42em; }

@@ -1,0 +1,8 @@
+{# Date bar of a day print (SPEC §14.3): a plain GET form and two links, inside .print-bar so it never prints. #}
+<form class="print-day" method="get" action="{{ day_bar.action }}">
+      <a class="btn btn-sm btn-ghost" href="{{ day_bar.prev }}">روز قبل</a>
+      <label class="sr-only" for="print-day-d">روز</label>
+      <input id="print-day-d" class="input mono" name="d" value="{{ day_bar.value }}" dir="ltr" inputmode="numeric" autocomplete="off" placeholder="1403/05/12">
+      <button class="btn btn-sm" type="submit">نمایش</button>
+      <a class="btn btn-sm btn-ghost" href="{{ day_bar.next }}">روز بعد</a>
+    </form>

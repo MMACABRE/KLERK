@@ -1,0 +1,12 @@
+# Top-level runtime pins (ADR-0004 list, versions in ADR-0011).
+# The lock requirements.txt pins every sub-dependency with hashes. Compile it from transformed/backend with:
+#   docker run --rm -v "<repo>/transformed/backend:/work" -w /work python:3.13.18-slim-bookworm sh -c \
+#     "apt-get update -q && apt-get install -y -q build-essential pkg-config default-libmysqlclient-dev && \
+#      pip install -q pip-tools==7.6.2 && \
+#      pip-compile -q --generate-hashes --strip-extras -o requirements.txt requirements.in"
+# pip-tools is a dev-only tool and is not in any requirements file.
+Django==5.2.19
+djangorestframework==3.18.3
+mysqlclient==2.3.0
+gunicorn==26.2.0
+cryptography==50.0.2

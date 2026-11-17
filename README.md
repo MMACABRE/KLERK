@@ -3,7 +3,7 @@
 Patient records for one private clinic (Persian, right to left, Jalali dates). Each folder named with a date and time
 is one published release. Earlier folders are never changed.
 
-**Use the newest folder: `2026-11-16_21-26`.** On a server:
+**Use the newest folder: `2026-11-17_19-11`.** On a server:
 
 ```
 git clone https://github.com/MMACABRE/KLERK.git /opt/clinic        # first time; later: git -C /opt/clinic pull --ff-only

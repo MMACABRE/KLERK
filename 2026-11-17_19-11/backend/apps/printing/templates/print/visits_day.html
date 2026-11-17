@@ -1,0 +1,27 @@
+{% extends "print/base.html" %}
+{% block content %}
+    {% if not rows %}
+    <div class="doc-empty">در این روز ویزیتی ثبت نشده است.</div>
+    {% else %}
+    <table class="doc-table">
+      <thead><tr><th>ساعت</th><th>کد</th><th>بیمار</th><th class="num">مبلغ صورتحساب</th><th class="num">پرداخت‌شده</th><th>روش</th><th>حساب</th><th class="num">مانده</th></tr></thead>
+      <tbody>
+        {% for v in rows %}
+        <tr>
+          <td class="mono">{{ v.time }}</td>
+          <td class="mono">{{ v.code }}</td>
+          <td>{{ v.name }} <b class="nowrap">— ویزیت {{ v.number }}</b></td>
+          <td class="num"><span class="money">{{ v.owed }}</span></td>
+          <td class="num"><span class="money">{{ v.paid }}</span></td>
+          <td>{{ v.methods }}</td>
+          <td>{{ v.accounts }}</td>
+          <td class="num"><span class="money">{{ v.rest }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot><tr><td colspan="3">جمع روز</td><td class="num"><span class="money">{{ totals.owed }}</span></td><td class="num"><span class="money">{{ totals.paid }}</span></td><td colspan="2"></td><td class="num"><span class="money">{{ totals.remaining }}</span></td></tr></tfoot>
+    </table>
+    <dl class="doc-totals"><div><dt>جمع صورتحساب‌ها</dt><dd>{{ totals.owed }}</dd></div><div><dt>جمع مانده</dt><dd>{{ totals.remaining }}</dd></div><div class="is-main"><dt>جمع پرداخت‌شده</dt><dd>{{ totals.paid }}</dd></div></dl>
+    {% endif %}
+    <p class="doc-note">«پرداخت‌شده» یعنی کل پرداخت هر ویزیت تا امروز، حتی اگر روز دیگری پرداخت شده باشد (مثل پیش‌پرداخت). درآمد همین روز در «گزارش مالی روزانه» است.</p>
+{% endblock %}

@@ -1,0 +1,245 @@
+{
+  "key_b64": "zXi19/wuTatVHJhxmb1kJ42vJkz9Z91KXX/afzcjWg8=",
+  "cases": [
+    {
+      "plain": "klerkTestKey000_abcdefghij",
+      "secret": "v1:XTe7g8t/XWNc5gi4t/4gqftArpOBVTnMGZ+zNGnIY5M/Qx0Yfx4SkD5GJ7DKTklET338G1BE"
+    },
+    {
+      "plain": "klerkTestKey001_abcdefghij",
+      "secret": "v1:4YM7RYaUjx29ZMe67oXk1b1ljqr0mCu0PLog0Tgp+c4uMvkDoo8LNNEJfOY8ACHWUuSkVSOs"
+    },
+    {
+      "plain": "klerkTestKey002_abcdefghij",
+      "secret": "v1:HcwT+EsOKuaAnNasK7+2IUX3GLmGzaVupjy/cShmh5QwyMuGrvsRPQd7P0wcUs51xHbP9nqt"
+    },
+    {
+      "plain": "klerkTestKey003_abcdefghij",
+      "secret": "v1:fy82/tW7skTzbIh5GSiurt3qxBgnT7FVIH9+7lpboVrG7V/VpZZjZJ0du4+kbnmzZ8l06DYB"
+    },
+    {
+      "plain": "klerkTestKey004_abcdefghij",
+      "secret": "v1:HTVfkjr422qgSsVwNifU1ODtOCFxEaoxZsAkpbP7jnzaG/hHKGaCtmjlGLKEIlMyjHjDpeZj"
+    },
+    {
+      "plain": "klerkTestKey005_abcdefghij",
+      "secret": "v1:HfG+WbdqCDcfqn3Zt36cEydnsjmg1E9nuo7BVDoFuoF9niNudXPXES1GVxPKY2nER6LXV8t/"
+    },
+    {
+      "plain": "klerkTestKey006_abcdefghij",
+      "secret": "v1:T2tDZzOX70NuTm1Ve7aGst9uW4xNQMP7lIchJm9w3xMg16q9IZr13W5Fp0QAAT0/vltVLvqt"
+    },
+    {
+      "plain": "klerkTestKey007_abcdefghij",
+      "secret": "v1:a476fFkF1VtmjWfTxKSrmULotGzdARu5K94ImtlScjwYzcbnhjGGEK9YkrszebU6Ur6Jy57D"
+    },
+    {
+      "plain": "klerkTestKey008_abcdefghij",
+      "secret": "v1:P78QcRt5BtssDZ1JAb/ICuShTDQvq9hd4c+TB/nIje01nwcprwwy+CwpNlTsVRioNru3tyMu"
+    },
+    {
+      "plain": "klerkTestKey009_abcdefghij",
+      "secret": "v1:5kREYSWUC/5/bDoiyGGD1nsq7JGc1zcI+djOCZDzGwFjGkSjew71u3BSKwxT8lTR/kl6OBIE"
+    },
+    {
+      "plain": "klerkTestKey010_abcdefghij",
+      "secret": "v1:OFRiXzalzOWAmxb6WGjNKl4ekczwtmnPp1r6Vf9Fuva5nmLkNPcjTHUEFOwgXN+9gmKlWcGP"
+    },
+    {
+      "plain": "klerkTestKey011_abcdefghij",
+      "secret": "v1:f1k9IpZVFFCNPHg6AXxiHc9VeDA4F+1LlM8FRgmkdzsqxtp7KSzu0oEPn6/yH+lquECv2fkz"
+    },
+    {
+      "plain": "klerkTestKey012_abcdefghij",
+      "secret": "v1:ttcfaXe9w8zD2zt+yXhptGhoE9NFCZK4xgGMfRBMC2FimOgRDKpI4x3cWu/QqhU1sQoAN1Mu"
+    },
+    {
+      "plain": "klerkTestKey013_abcdefghij",
+      "secret": "v1:jrpsWSP5JUE8lpNiCxpE7v8vjR6gHG4IAK0cXhmEepFvxXrveH5/BRTsF7Pj0qb13R9zWmpI"
+    },
+    {
+      "plain": "klerkTestKey014_abcdefghij",
+      "secret": "v1:B1epTjkui3acnjqMkjZBZGoX0cY24aTZpGm+610YiJzeSjEYOlIALtwZD5bgBq3tR1ZxGpbI"
+    },
+    {
+      "plain": "klerkTestKey015_abcdefghij",
+      "secret": "v1:GIuZkfLi2iB9roLB7fQ25DZX6K3Qt5BLF05c0YScrh4t4zjxIcJD6n/C6k3nXCUle9AJbPr/"
+    },
+    {
+      "plain": "klerkTestKey016_abcdefghij",
+      "secret": "v1:rUOKFSWZvHI41jmignyozCKVV52VhaUMgUepySBxXQ7q+7ADnKYwk5PzeHoh/hIQGymgwCh3"
+    },
+    {
+      "plain": "klerkTestKey017_abcdefghij",
+      "secret": "v1:tKJJcWdHTQsQiGxys4QXsb+p9L0l7AqLhidlU0xdpFhYvmRH+Lq5PZSJBJ2qDJJCYLvJ/qrR"
+    },
+    {
+      "plain": "klerkTestKey018_abcdefghij",
+      "secret": "v1:nyAdthFClHPB2bvWZY9NfxaIen62KGaJwRXLKJaewyXh+9NzlBSXDWFnx6BJlP0hEJfN35Lt"
+    },
+    {
+      "plain": "klerkTestKey019_abcdefghij",
+      "secret": "v1:nMAVxm4k8tdDlDye9b2LFN1G7+qMsLbjQ3fiK/QrM/J7Z0lqGXwcxuGA//QsrPaR5KuyTBtc"
+    },
+    {
+      "plain": "klerkTestKey020_abcdefghij",
+      "secret": "v1:da83uTWCoFvKkEotqsewEj0fkzFq0+gAkayia2mBgp57Wl1kk5BevIjTFcdUG2C5tnTznaAj"
+    },
+    {
+      "plain": "klerkTestKey021_abcdefghij",
+      "secret": "v1:poI32bnn0N0MpbBZwDjWt7llPXk59ZxKfqRJvbULPwsUPC0ahM1VmmUueR0vW4I5asfwdvHX"
+    },
+    {
+      "plain": "klerkTestKey022_abcdefghij",
+      "secret": "v1:kcZabjIR7KJPiyplxu6VMbMxmYi7Pvy2/SZhORwp3VpqKHqxznbJgNde0SPe8Kl7ffqXMEvO"
+    },
+    {
+      "plain": "klerkTestKey023_abcdefghij",
+      "secret": "v1:1fbXsld3cPhIr1l3tZkEElcRUZT8IMhTV/ZGLDB97XDzn7lUeZaP2NsuIyXYTitRL+JG5oVN"
+    },
+    {
+      "plain": "klerkTestKey024_abcdefghij",
+      "secret": "v1:1uoxMK+8gMYVvi1Al6H3Dp/Qu2TTlcAFkmhl+bonLH+KJFHFbxZEMTjTN0uNlpGZxLyn3YYM"
+    },
+    {
+      "plain": "klerkTestKey025_abcdefghij",
+      "secret": "v1:v7BpS4mvvlu6wQvSoZ2GzwvEmkMxwcNHAwTNQ03softdXTtkier4pe2UFV8ElSjYqTO99N69"
+    },
+    {
+      "plain": "klerkTestKey026_abcdefghij",
+      "secret": "v1:RA24hhFW5WQFAQnt/jIT4CCGB7s1etC0RrfwZXdf+Xv7eiCObL1TAzj0S7JmMkTzPt3MtoH1"
+    },
+    {
+      "plain": "klerkTestKey027_abcdefghij",
+      "secret": "v1:r3pk//h/OnIHZ2zoHz9f6lQ9JSAPGoKGXkiq5ECMKF9qRPyJ8mNBYvhzT4/G2yaPA5Nyx7Lq"
+    },
+    {
+      "plain": "klerkTestKey028_abcdefghij",
+      "secret": "v1:nPoUsITvTmjsaJYhnU7LC+/Fa3WPVIXGAsinHQdP6rRaLkmSzJa1DUM7Wkfd5suKL2EYzISx"
+    },
+    {
+      "plain": "klerkTestKey029_abcdefghij",
+      "secret": "v1:HSBqw+P+SY7N2+INZygXCfULlzUh0m1tqgT3rshB6BD/0f4XSGYiLCkQf64VEAzxO+CtC+Q0"
+    },
+    {
+      "plain": "klerkTestKey030_abcdefghij",
+      "secret": "v1:3+THZw1vCgtmGwiNWDj0ZGvIJGqBZMhyMc0WuO3GQwwTOR3e2YsuNbrt4XXjVPBTXUebmUHo"
+    },
+    {
+      "plain": "klerkTestKey031_abcdefghij",
+      "secret": "v1:cta4ki90kfGe07Yhj9px/B3O9nO5CGtEJ+EiW+CtgazyrmgcjpLNrtLIUVtsJuBQWLLjqM18"
+    },
+    {
+      "plain": "klerkTestKey032_abcdefghij",
+      "secret": "v1:M9j6FSX3qUc5S6JIieh7I+Qn8EuJnIUZTgr60CU0Xmyebnf7ymmNZNn5AQMu9Yv0n8zTaRws"
+    },
+    {
+      "plain": "klerkTestKey033_abcdefghij",
+      "secret": "v1:aPt4drPzEZVfUeNEvF9ww4bNHA+7mlAZ3L4JtAEseVaUrREz7ceNIU70YhZ0z1Ki8KGngN8X"
+    },
+    {
+      "plain": "klerkTestKey034_abcdefghij",
+      "secret": "v1:OVzFXyw1Qu1YF+SEM48fK4F1T2kEjike3UxNvUI9oz3NlHwe+cYQgMIKPrYPZCWAZzZ1EaDO"
+    },
+    {
+      "plain": "klerkTestKey035_abcdefghij",
+      "secret": "v1:0dmWBGaW5X9edAvOXBRytqlxd2CuYggNfXDKXI54gnhz6fgsbZqVytlfhGD/QszYZSZuqVKc"
+    },
+    {
+      "plain": "klerkTestKey036_abcdefghij",
+      "secret": "v1:GurzUAPVM9Msz1DzOPV2cIpz3rJ3gKlClkTzhuJKnfW+KY45BD9CJYozrurbTsY4iNbhGXOh"
+    },
+    {
+      "plain": "klerkTestKey037_abcdefghij",
+      "secret": "v1:TDsjQI18IOlmbymD7VnOqVIcr08gqAbAvVsH8Q7jwdAhHxGBLhoidbW6kvsUayx80yX10GZK"
+    },
+    {
+      "plain": "klerkTestKey038_abcdefghij",
+      "secret": "v1:9VRj9sSLLbhnsHYAAZuzc1kIKEkxX6vA3R+CBs6u7u28FpY4JhcK67F8QFRhl5bIIaB3e7Mp"
+    },
+    {
+      "plain": "klerkTestKey039_abcdefghij",
+      "secret": "v1:G4QGJ+J/to4u1ecCQZbZNOow21PrH2V33sVct/gzxXFe0pK525s+oA31kZs/J1tjIdQJYakD"
+    },
+    {
+      "plain": "klerkTestKey040_abcdefghij",
+      "secret": "v1:WsRkBdtyXbggd3Gpvi0TrNfIuQLq8dvPCqZLRTqhBfH53cp1wtu3eqMg1nKJnyote93QQub6"
+    },
+    {
+      "plain": "klerkTestKey041_abcdefghij",
+      "secret": "v1:rxI/LU+mKiJhiVdM4JvANhSi8w4C1sLBCrHZkQFTLmvKH7q6VZTTDg53Fzl7UN6ea3Iq9l42"
+    },
+    {
+      "plain": "klerkTestKey042_abcdefghij",
+      "secret": "v1:IHUuWZZLD1EfbT64csejifcGsSZQr4NM84CY7FJh3BwIhooiMhLlHLMTggyVZiDLVYRWUz+m"
+    },
+    {
+      "plain": "klerkTestKey043_abcdefghij",
+      "secret": "v1:xPeVCrUybn8v9F4HgFUck+cRtcnnKyPlMkwLHN52n+OsoXYs+2rVHi+r5S2iuudSTUe/nw17"
+    },
+    {
+      "plain": "klerkTestKey044_abcdefghij",
+      "secret": "v1:UueXPA3Do2xMqFJX7l/klnxRWwMFiKZTCHGG8GZUF/3Sut1H9ow0D7+LqjTEfp9vHgroglMy"
+    },
+    {
+      "plain": "klerkTestKey045_abcdefghij",
+      "secret": "v1:LyYsRSWAGT65Sc6AF6Jkw41MeBG3VwTOLAc1evYA6mhym5G+vikaFMYB107stBu/8AsZpMK5"
+    },
+    {
+      "plain": "klerkTestKey046_abcdefghij",
+      "secret": "v1:8D3kfMlY+2iXKZvcsUl7ACZjgtXc2L4BHHgRGrRBtfChMux1XfnCP8M3z6FR6D/3PDdN9XCp"
+    },
+    {
+      "plain": "klerkTestKey047_abcdefghij",
+      "secret": "v1:NdCc2+VUhkJtCn+fUQd0pnrdviZGJjAJ3HKbq2wU10SXzAwiA2F7H9RMHuHT71NQe/EUoy5N"
+    },
+    {
+      "plain": "klerkTestKey048_abcdefghij",
+      "secret": "v1:yphR79z1ks740rnxiNLcCSNJ88Rt9kpwzr4V4VcvSdh98c3eq2WC54wk4j2mVOb++e4Axp+v"
+    },
+    {
+      "plain": "klerkTestKey049_abcdefghij",
+      "secret": "v1:pKwHBB8j0EJC0GmfPiyb0+kupG1i0U9WWeHPiUXSdh4KcdzhTDsWDpJhIVhoXur3zY4UR5U5"
+    },
+    {
+      "plain": "klerkTestKey050_abcdefghij",
+      "secret": "v1:bu+AgRoervAZLjEPcIiiqVLPgnnm5sSxow3y4wj1gVdrBU+dnq5P91L/DXqT6QgT8dEVRuBT"
+    },
+    {
+      "plain": "klerkTestKey051_abcdefghij",
+      "secret": "v1:HhgNTsfdYXOAhAAJw4dGisTfgiuk+laOFgR+CXaMnQuU4XOT/Uh/BgeL7rqTz28GLA88O5gU"
+    },
+    {
+      "plain": "klerkTestKey052_abcdefghij",
+      "secret": "v1:gB42VjCEUQ0Az5Fbr370G0BY42qkG46lrfor6HY6WwfGLQ3FQv3onFxgbupS/eLZlFB0U5Kt"
+    },
+    {
+      "plain": "klerkTestKey053_abcdefghij",
+      "secret": "v1:k6jn5Rstvtfm6I99e3qvViAwKlcGAon/oCFsC1NEUw/UgfFk4uJQUDIWF78Fa7wORt+YzSA8"
+    },
+    {
+      "plain": "klerkTestKey054_abcdefghij",
+      "secret": "v1:A9p2oUyPLhRdp13W5FOC7Kb4qeBframEjxZNwX8KAUvWgHMMa8bXH619LYFnI7SvaJgJagGW"
+    },
+    {
+      "plain": "klerkTestKey055_abcdefghij",
+      "secret": "v1:VQmc4tC1y4CDdidE9tVywPDN8TeRcVE2l0ctr30fZ8KPwEWU6ZvmVSXaQ+EJ5GQbKUs8/G4J"
+    },
+    {
+      "plain": "klerkTestKey056_abcdefghij",
+      "secret": "v1:PX7Nug7i5Uzqj33aFgf9WDzHI88oWZW4hWs+xyJk5J2HflizDM/Pd+pT8DtfOcjzC8bKPdcB"
+    },
+    {
+      "plain": "klerkTestKey057_abcdefghij",
+      "secret": "v1:jXAFXDa+MXAAImcjLchSot+tyWH8/cTj8R0AJ2QRivEUqNkWSRVkpURxtc4yY4OUh0odc+qk"
+    },
+    {
+      "plain": "klerkTestKey058_abcdefghij",
+      "secret": "v1:4+PSMBayCi8N3cnCsP3IIorgEPgvsiwq8QwITUj2WZW/vBXZTjeLzSiabynJ78XgX9uesXdb"
+    },
+    {
+      "plain": "klerkTestKey059_abcdefghij",
+      "secret": "v1:L0/O38x1dkYU/XkbgEPejMQRwLndwjefVcprz0p7pYSLbD81oKcihz8j2nMg7pz3DI2PyFmW"
+    }
+  ]
+}
