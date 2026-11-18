@@ -1,0 +1,58 @@
+"""Document metadata (SPEC §4.1). The patient folder on disk is the source of truth for which files
+exist."""
+
+from django.conf import settings
+from django.db import models
+from django.db.models import Q
+
+from apps.patients.models import Patient
+
+CATEGORY_CHOICES = [
+    ("consent", "consent"),
+    ("lab", "lab"),
+    ("imaging", "imaging"),
+    ("surgery", "surgery"),
+    ("other", "other"),
+]
+
+
+class DocumentFolder(models.Model):
+    """A folder of one patient's documents (SPEC §14.5.4): a label in the database only; the patient's folder on
+    disk stays flat."""
+
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="document_folders")
+    name = models.CharField(max_length=60)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "document_folders"
+        constraints = [models.UniqueConstraint(fields=["patient", "name"], name="document_folders_patient_name")]
+
+
+class Document(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="documents")
+    filename = models.CharField(max_length=255)
+    category = models.CharField(max_length=10, default="other", choices=CATEGORY_CHOICES)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    doc_date = models.DateField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    folder = models.ForeignKey(DocumentFolder, on_delete=models.SET_NULL, null=True, blank=True, related_name="+")
+
+    class Meta:
+        db_table = "documents"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["patient", "filename"], name="documents_patient_filename"
+            ),
+            models.CheckConstraint(
+                condition=Q(category__in=["consent", "lab", "imaging", "surgery", "other"]),
+                name="documents_category_check",
+            ),
+        ]

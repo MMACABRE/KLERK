@@ -1,0 +1,13 @@
+# Top-level dev and CI pins (ADR-0004 list, versions in ADR-0011). Includes requirements.in, so the lock covers both.
+# The lock requirements-dev.txt is compiled from transformed/backend with the command in requirements.in, using
+#   -o requirements-dev.txt requirements-dev.in
+# mypy is pinned inside the range django-stubs 5.2.9 declares (mypy>=1.13,<1.20; ADR-0011).
+-r requirements.in
+pytest==9.2.0
+pytest-django==4.14.0
+factory-boy==3.3.3
+ruff==0.17.3
+mypy==1.19.1
+django-stubs==5.2.9
+bandit==1.9.4
+pip-audit==2.10.1

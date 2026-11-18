@@ -1,0 +1,2 @@
+{# Money summary of a day (SPEC §14.3), always shown, zeros on a day with no payments. #}
+    <dl class="doc-totals doc-summary">{% for label, value, main in summary %}<div{% if main %} class="is-main"{% endif %}><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}</dl>

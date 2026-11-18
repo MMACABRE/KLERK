@@ -1,0 +1,4 @@
+# Clinic sites are not for search engines. Crawling stays allowed so a crawler reads the noindex
+# header and meta tag on every page and drops anything it listed before.
+User-agent: *
+Allow: /

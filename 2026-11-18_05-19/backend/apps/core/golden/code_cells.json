@@ -1,0 +1,90 @@
+[
+  {
+    "input": "p-301",
+    "output": "P-000301"
+  },
+  {
+    "input": "301",
+    "output": "P-000301"
+  },
+  {
+    "input": "P-000301",
+    "output": "P-000301"
+  },
+  {
+    "input": "P301",
+    "output": "P-000301"
+  },
+  {
+    "input": "P-301",
+    "output": "P-000301"
+  },
+  {
+    "input": "۳۰۱",
+    "output": "P-000301"
+  },
+  {
+    "input": "٣٠١",
+    "output": "P-000301"
+  },
+  {
+    "input": "  p-301  ",
+    "output": "P-000301"
+  },
+  {
+    "input": "",
+    "output": null
+  },
+  {
+    "input": "   ",
+    "output": null
+  },
+  {
+    "input": "P-1234567",
+    "output": "refused"
+  },
+  {
+    "input": "P-../..",
+    "output": "refused"
+  },
+  {
+    "input": "x301",
+    "output": "refused"
+  },
+  {
+    "input": "P-30 1",
+    "output": "refused"
+  },
+  {
+    "input": "-301",
+    "output": "refused"
+  },
+  {
+    "input": "p-000004",
+    "output": "P-000004"
+  },
+  {
+    "input": "P-0001234",
+    "output": "refused"
+  },
+  {
+    "input": "P-000001",
+    "output": "P-000001"
+  },
+  {
+    "input": "0",
+    "output": "P-000000"
+  },
+  {
+    "input": "P-",
+    "output": "refused"
+  },
+  {
+    "input": "1e3",
+    "output": "refused"
+  },
+  {
+    "input": "P-٠٠٠٠٥٠",
+    "output": "P-000050"
+  }
+]

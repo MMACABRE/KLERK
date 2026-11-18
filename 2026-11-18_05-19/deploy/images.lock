@@ -1,0 +1,13 @@
+# The finished images of this release. Written by tools/build-images.sh; do not edit by hand.
+# deploy/fetch-images.sh puts them on the server (offline file, or ghcr.io by digest), and docker-compose.yml runs
+# them. Nothing is built on the server.
+IMAGES_TAG=b7d81762ca1d
+BACKEND_IMAGE=ghcr.io/mmacabre/klerk-backend:b7d81762ca1d
+BACKEND_DIGEST=sha256:6e591fd36f3605c02a472c9f806cec4aed39501e1cfb5d4d8a797a3a16336638
+WEB_IMAGE=ghcr.io/mmacabre/klerk-web:b7d81762ca1d
+WEB_DIGEST=sha256:f678bb303ccbb6914ab377a1c9a4ecf53b5286ff0fae20bf898d7ed315808fdf
+MYSQL_IMAGE=ghcr.io/mmacabre/klerk-mysql:8.4.13
+MYSQL_DIGEST=sha256:4a53615928160a77ef514d1e5038052b0015edc59980c4c1adaadd8d7b72a7e5
+IMAGES_TAR=klerk-images-b7d81762ca1d.tar.gz
+IMAGES_TAR_SHA256=df622153a02a43fb4945f56daa5400d71cd8a688ff8b7bc4fe55d023f3c142a3
+IMAGES_TAR_URL=https://github.com/MMACABRE/KLERK/releases/download/images-b7d81762ca1d/klerk-images-b7d81762ca1d.tar.gz

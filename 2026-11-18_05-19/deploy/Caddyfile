@@ -1,0 +1,49 @@
+# Production. DOMAIN comes from the clinic's .env: a real domain gets a free Let's Encrypt certificate
+# automatically; DOMAIN=localhost gets a local self-signed certificate (for a test on your own computer).
+# API, print pages and /health go to Django, which sets its own security headers. Everything else is the built Vue
+# app from /srv, with the same headers as Django's (apps/core/middleware.py).
+{$DOMAIN} {
+	encode zstd gzip
+
+	# The app accepts files up to 30 MB; this is just above that.
+	request_body {
+		max_size 35MB
+	}
+
+	# Clinic sites stay out of search engines (owner, 2026-11-12): every answer says noindex. robots.txt still
+	# allows crawling, so a search engine reads this header and drops pages it already listed.
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Robots-Tag "noindex, nofollow, noarchive"
+		-Server
+	}
+
+	@backend path /health /api/* /print/*
+	handle @backend {
+		reverse_proxy backend:8000 {
+			# Read the whole request body before it reaches gunicorn, so a slow upload never holds a backend
+			# thread (critique S5). Uploads are at most 30 MB.
+			request_buffers 35MB
+		}
+	}
+
+	handle {
+		header {
+			Content-Security-Policy "default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+			X-Content-Type-Options nosniff
+			Referrer-Policy same-origin
+			Cross-Origin-Opener-Policy same-origin
+			Cross-Origin-Resource-Policy same-origin
+			Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+		}
+		# Hashed bundle files never change; the page itself is always checked again.
+		@hashed path /assets/*
+		header @hashed Cache-Control "public, max-age=31536000, immutable"
+		@page not path /assets/* /css/* /fonts/* /img/* /js/* /favicon.ico /favicon.svg /apple-touch-icon.png
+		header @page Cache-Control "no-cache"
+		root * /srv
+		# Vue routes (/patients/P-000123, ...) are answered with index.html; the router shows the page.
+		try_files {path} /index.html
+		file_server
+	}
+}
